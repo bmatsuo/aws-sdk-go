@@ -9,19 +9,9 @@ import (
 	"github.com/awslabs/aws-sdk-go/aws"
 )
 
-// needsMD5 returns true for any request that requires the Content-MD5 header
-// be included with the request (and signed as a canonical header).
-func needsMD5(r *aws.Request) bool {
-	return r.Operation.Name == "DeleteObjects"
-}
-
 // contentMD5 computes and sets the HTTP Content-MD5 header for requests that
 // require it.
 func contentMD5(r *aws.Request) {
-	if !needsMD5(r) {
-		return
-	}
-
 	h := md5.New()
 
 	// hash the body.  seek back to the first position after reading to reset
